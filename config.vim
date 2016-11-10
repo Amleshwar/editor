@@ -1,0 +1,111 @@
+
+set nocompatible
+
+
+"Vim vundle settings"
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'tomasr/molokai'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'scrooloose/syntastic'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
+Plugin 'majutsushi/tagbar'
+Plugin 'kien/ctrlp.vim'
+
+"Working with git"
+Plugin 'airblade/vim-gitgutter'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Raimondi/delimitMate'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'godlygeek/tabular'
+
+call vundle#end()
+filetype plugin indent on
+
+
+
+
+set backspace=indent,eol,start
+set ruler
+set number
+set showcmd
+set incsearch
+set hlsearch
+syntax on
+set mouse=a
+set background=dark
+let g:solarized_termcolors=256
+colorscheme solarized
+set laststatus=2
+let g:airline_powerline_fonts = 1
+let g:airline_detect_paste=1
+let g:airline#extensions#tabline#enabled = 1
+
+
+nmap <silent> <leader>t :NERDTreeTabsToggle<CR>
+let g:nerdtree_tabs_open_on_console_startup = 1
+
+"Nerd Tree specific commands"
+"Opening nerdtree automatically when vim startsup"
+autocmd vimenter * NERDTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"Opening nerdtree automatically when vim starts up on opening directory"
+"autocmd StdinReadPre * let s:std_in=1"
+"autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif"
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+"Syntastic Settings for error notification"
+let g:syntastic_error_symbol = '✘'
+let g:syntastic_warning_symbol = "▲"
+augroup mySyntastic
+	au!
+	au Filetype tex let b:syntastic_mode = "passive"
+augroup END
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+"Ending syntastic settings"
+
+
+
+"Vim easy tags and xolox settings"
+set tags=./tags;,~/.vimtags
+let g:easytags_events = ['BufReadPost', 'BufWritePost']
+let g:easytags_async = 1
+let g:easytags_dynamic_files = 2
+let g:easytags_resolve_links = 1
+let g:easytags_suppress_ctags_warning = 1
+
+"Majutsushi tagbar settings"
+"Open/close tagbar with \b"
+nmap <silent> <leader>b :TagbarToggle<CR>
+
+"vim-gitgutter settings"
+"Required after changing color scheme"
+"In vim-airline only display "hunks" if the diff is non zero
+let g:airline#extensions#hunks#non_zero_only = 1
+hi clear SignColumn
+"Delimit mate settings"
+
+augroup mydelimitMate
+	au!	
+	au FileType markdown let b:delimitMate_nesting_quotes = ["'"]
+	au FileType tex let b:delimitMate_quotes = ""
+	au FileType tex let b:delimitMate_matchpairs = "(:),[:],{:},`:'"
+	au FileType python let b:delimitMate_nesting_quotes = ['"', "'"]
+augroup END
+
