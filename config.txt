@@ -1,4 +1,5 @@
 
+
 set nocompatible
 
 
@@ -19,8 +20,8 @@ Plugin 'xolox/vim-easytags'
 Plugin 'majutsushi/tagbar'
 Plugin 'kien/ctrlp.vim'
 "Working with git"
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Raimondi/delimitMate'
 Plugin 'christoomey/vim-tmux-navigator'
@@ -28,8 +29,7 @@ Plugin 'godlygeek/tabular'
 call vundle#end()
 filetype plugin indent on
 "Some Basic Settings"
-
-
+inoremap jk <esc> 
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -49,7 +49,11 @@ highlight ColorColumn ctermbg=darkgray
 "set makeprg=make\ -C\ ../build\ -j9
 "nnoremap <F4> :make!<cr>
 "nnoremap <F5> :!./my_great_program<cr>
-map <F8> :!g++ % && ./a.out <CR> 
+autocmd filetype cpp nnoremap <F4> :!g++ % -ggdb -o %:r <CR>
+autocmd filetype cpp nnoremap<F5> :!g++ % -ggdb -o %:r && ./%:r <CR>
+
+
+"map <F8> :!g++ % && ./a.out <CR> 
 
 
 set background=dark
@@ -120,13 +124,11 @@ augroup mydelimitMate
 	au FileType tex let b:delimitMate_matchpairs = "(:),[:],{:},`:'"
 	au FileType python let b:delimitMate_nesting_quotes = ['"', "'"]
 augroup END
+"YOu complete me settings
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_auto_trigger = 1
 
 
-"YouCompeteMe Configuration File
-"let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'  
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-let g:ycm_auto_trigger  = 1
 
-let g:ycm_min_num_of_chars_for_completion = 1
 
-let g:ycm_autoclose_preview_window_after_insertion = 1
+
